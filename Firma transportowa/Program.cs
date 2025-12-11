@@ -21,6 +21,25 @@ namespace FirmaTransportowa
         public DateTime WaznoscBadaniaTechnicznego { get; set; } 
         public StatusPojazdu Status { get; set; }
         public string Vin { get; set; }
+        public int Przebieg {get; set;}
+        public DateTime waznoscPolisyOC  { get; set; }
+
+        public bool czyZdatnyDoJazdy()
+        {
+            if (Status != StatusPojazdu.Dostepny)
+            {
+                return false;
+            }
+            if (waznoscPolisyOC < DateTime.Now)
+            {
+                return false;
+            }
+            if (WaznoscBadaniaTechnicznego < DateTime.Now)
+            {
+                return false;
+            }
+            return true;
+        }
     }
     class Program
     {
@@ -82,19 +101,28 @@ namespace FirmaTransportowa
             string marka = Console.ReadLine();
             Console.Write("Podaj model auta: ");
             string model = Console.ReadLine();
-            Console.Write("Podaj rok auta: ");
-            int rok = int.Parse(Console.ReadLine());
             Console.Write("Podaj numer vin auta:");
             string vin = Console.ReadLine();
+            
+            Console.Write("Podaj rok auta: ");
+            int.TryParse(Console.ReadLine(), out int rok);
+            Console.Write("Podaj aktualny przebieg w (km): ");
+            int.TryParse(Console.ReadLine(), out int przebieg);
+            Console.Write("Podaj date waznosci przegladu (RRRR-MM-DD): ");
+            DateTime.TryParse(Console.ReadLine(), out DateTime przeglad);
+            Console.Write("Podaj date waznosci ubezpieczenia (RRRR-DD-MM):  ");
+            DateTime.TryParse(Console.ReadLine(), out DateTime oc);
 
             Pojazd noweAuto = new Pojazd();
             noweAuto.Marka = marka;
             noweAuto.Model = model;
             noweAuto.RokProdukcji = rok;
             noweAuto.Vin = vin;
+            noweAuto.Przebieg = przebieg;
+            noweAuto.WaznoscBadaniaTechnicznego = przeglad;
+            noweAuto.waznoscPolisyOC = oc;
 
             noweAuto.Status = StatusPojazdu.Dostepny;
-            noweAuto.WaznoscBadaniaTechnicznego = DateTime.Now.AddYears(1);
             
             flota.Add(noweAuto);
             Console.WriteLine("Pojazd dodany pomyślnie! Naciśnij dowolny klawisz...");
@@ -111,7 +139,20 @@ namespace FirmaTransportowa
             {
                 foreach (var auto in flota)
                 {
-                    Console.WriteLine($"[{auto.Status}] {auto.Marka} {auto.Model} ({auto.RokProdukcji}) - Przegląd do: {auto.WaznoscBadaniaTechnicznego.ToShortDateString()}");
+                    bool gotowy = auto.czyZdatnyDoJazdy();
+                    if (gotowy)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    string statusGotowosci = gotowy ? "[GOTOWY]" : "[NIEZDATNY]";
+                    Console.WriteLine($"{statusGotowosci} [{auto.Status}] {auto.Marka} {auto.Model} - Przebieg: {auto.Przebieg}km");
+                    Console.ResetColor();
+                    Console.WriteLine($"   -> Przegląd do: {auto.WaznoscBadaniaTechnicznego.ToShortDateString()}");
+                    Console.WriteLine($"   -> OC do: {auto.waznoscPolisyOC.ToShortDateString()}");
                 }
             }
             Console.WriteLine("\nNacisnij dowolny klawisz...");
