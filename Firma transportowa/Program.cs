@@ -84,7 +84,7 @@ namespace FirmaTransportowa
             noweAuto.Model = model;
             noweAuto.RokProdukcji = rok;
             noweAuto.Vin = vin;
-            noweAuto.Przebieg = przebieg;
+            noweAuto.AktualnyPrzebieg = przebieg;
             noweAuto.WaznoscBadaniaTechnicznego = przeglad;
             noweAuto.waznoscPolisyOC = oc;
 
@@ -105,7 +105,7 @@ namespace FirmaTransportowa
             {
                 foreach (var auto in flota)
                 {
-                    bool gotowy = auto.czyZdatnyDoJazdy();
+                    bool gotowy = auto.czyZdatnyDoJazdy(out string powod);
                     if (gotowy)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -115,7 +115,7 @@ namespace FirmaTransportowa
                         Console.ForegroundColor = ConsoleColor.Red;
                     }
                     string statusGotowosci = gotowy ? "[GOTOWY]" : "[NIEZDATNY]";
-                    Console.WriteLine($"{statusGotowosci} [{auto.Status}] {auto.Marka} {auto.Model} - Przebieg: {auto.Przebieg}km");
+                    Console.WriteLine($"{statusGotowosci} [{auto.Status}] {auto.Marka} {auto.Model} - Przebieg: {auto.AktualnyPrzebieg}km");
                     Console.ResetColor();
                     Console.WriteLine($"   -> Przegląd do: {auto.WaznoscBadaniaTechnicznego.ToShortDateString()}");
                     Console.WriteLine($"   -> OC do: {auto.waznoscPolisyOC.ToShortDateString()}");
