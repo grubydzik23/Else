@@ -40,7 +40,8 @@ namespace FirmaTransportowa
                 Console.Clear();
                 Console.WriteLine("1.Rejestracja nowego samochodu");
                 Console.WriteLine("2.Lista zarejestrowanych aut");
-                Console.WriteLine("3.Wroc do menu glownego");
+                Console.WriteLine("3.Zarzadzaj konkretnym pojazdem");
+                Console.WriteLine("4.Wroc do menu glownego");
                 Console.Write("Twoj wybor: ");
                 var choice = Console.ReadLine();
                 switch (choice)
@@ -52,6 +53,13 @@ namespace FirmaTransportowa
                         WyswietlPojazdy();
                         break;
                     case "3":
+                        Pojazd wybrany = WybierzPojazd();
+                        if (wybrany != null)
+                        {
+                            MenuAkcjiPojazdu(wybrany);
+                        }
+                        break;
+                    case "4":
                         return;
                     default:
                         Console.WriteLine("Wybrales zla opcje!");
@@ -123,6 +131,43 @@ namespace FirmaTransportowa
             }
             Console.WriteLine("\nNacisnij dowolny klawisz...");
             Console.ReadKey();
+        }
+
+        static Pojazd WybierzPojazd()
+        {
+            Console.Clear();
+            Console.WriteLine("<---Wybierz pojazd z listy ponizej.--->");
+
+            if (flota.Count == 0)
+            {
+                Console.WriteLine("Brak aut na liscie.");
+                Console.ReadKey();
+                return null;
+            }
+
+            for (int i=0; i<flota.Count; i++)
+            {
+                Console.WriteLine($"{i+1}. {flota[i].Marka} {flota[i].Model} ({flota[i]. Vin})");
+            }
+            Console.Write("\nPodaj numer pojazdu (0 jesli chcesz anulowac): ");
+            if(int.TryParse(Console.ReadLine(), out int numer) && numer > 0 && numer <= flota.Count)
+            {
+                return flota[numer - 1];
+            }
+            return null;
+        }
+
+        static void MenuAkcjiPojazdu(Pojazd auto)
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine($"Zarzadamy {auto.Marka} {auto.Model}.");
+                Console.WriteLine($"Status: {auto.Status}.");
+                Console.WriteLine($"Aktualny przebieg: {auto.AktualnyPrzebieg} km.");
+                
+                
+            }
         }
     }
 }
