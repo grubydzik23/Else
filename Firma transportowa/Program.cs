@@ -84,7 +84,7 @@ namespace FirmaTransportowa
             int.TryParse(Console.ReadLine(), out int przebieg);
             Console.Write("Podaj date waznosci przegladu (RRRR-MM-DD): ");
             DateTime.TryParse(Console.ReadLine(), out DateTime przeglad);
-            Console.Write("Podaj date waznosci ubezpieczenia (RRRR-DD-MM):  ");
+            Console.Write("Podaj date waznosci ubezpieczenia (RRRR-MM-DD):  ");
             DateTime.TryParse(Console.ReadLine(), out DateTime oc);
 
             Pojazd noweAuto = new Pojazd();
@@ -166,7 +166,105 @@ namespace FirmaTransportowa
                 Console.WriteLine($"Status: {auto.Status}.");
                 Console.WriteLine($"Aktualny przebieg: {auto.AktualnyPrzebieg} km.");
                 
-                
+                bool czySprawny = auto.czyZdatnyDoJazdy(out string powod);
+                if (!czySprawny) Console.WriteLine($"UWAGA: {powod}!");
+
+                Console.WriteLine("1. Zaktualizuj przebieg");
+                Console.WriteLine("2. Zaktaulizuj OC");
+                Console.WriteLine("3. Zaktualizuj badanie techniczne");
+                Console.WriteLine("4. Zglos usterke");
+                Console.WriteLine("5. Wykonaj naprawe");
+                Console.WriteLine("6. Historia serwisowa");
+                Console.WriteLine("7. Wroc");
+
+                Console.Write("Wybor: ");
+                string wybory = Console.ReadLine();
+
+                switch (wybory)
+                {
+                    case "1":
+                        Console.Write("Podaj nowy przebieg: ");
+                        if (int.TryParse(Console.ReadLine(), out int nowyPrzebieg))
+                        {
+                            if (nowyPrzebieg >= auto.AktualnyPrzebieg)
+                            {
+                                auto.AktualnyPrzebieg = nowyPrzebieg;
+                                Console.Write("Zapisano.");
+                            }
+                            else
+                            {
+                                Console.Write("Nie mozna cofnac licznika.");
+                            }
+                        }
+                        break;
+                    case "2":
+                        Console.Write("Podaj date konca nowego OC(RRRR-MM-DD): ");
+                        if (DateTime.TryParse(Console.ReadLine(), out DateTime noweOC))
+                        {
+                            if (noweOC >= auto.waznoscPolisyOC)
+                            {
+                                auto.waznoscPolisyOC = noweOC;
+                                Console.Write("Zapisano.");
+                            }
+                            else
+                            {
+                                Console.Write("Nie mozna zaktutalizowac oc do tylu.");
+                            }
+                        }
+                        break;
+                    case "3":
+                        Console.Write("Podaj date konca nowego badania technicznego(RRRR-MM-DD): ");
+                        if (DateTime.TryParse(Console.ReadLine(), out DateTime noweBadania))
+                        {
+                            if (noweBadania >= auto.WaznoscBadaniaTechnicznego)
+                            {
+                                auto.WaznoscBadaniaTechnicznego = noweBadania;
+                                Console.Write("Zapisano.");
+                            }
+                            else
+                            {
+                                Console.Write("Nie mozna zaktutalizowac oc do tylu.");
+                            }
+                        }
+                        break;
+                    case "4":
+                        Console.Write("Podaj usterke/zdarzenie: ");
+                        string opis = Console.ReadLine();
+                        
+                        Console.Write("Czy usterka jest krytyczna(t/n): ");
+                        bool krytyczna = Console.ReadLine().ToLower() == "t";
+                        
+                        auto.ZglosUsterke(opis, krytyczna);
+                        Console.WriteLine("Zgloszenie przyjete!");
+                        break;
+                    case "5":
+                        auto.WykonajNaprawe();
+                        Console.WriteLine("Wszystkie usterki oznaczone jako rozwiazane. Status auta dostepny.");
+                        break;
+                    case "6":
+                        if (auto.HistoriaSerwisow.Count==0)
+                        {
+                            Console.WriteLine("Historia serwisow jest pusta.");
+                        }
+                        else
+                        {
+                            foreach (var wpis in auto.HistoriaSerwisow)
+                            {
+                                string stan = wpis.czyRozwiazana ? "[NAPRAWIONE]" : "[AKTYWNE]";
+                                string waga = wpis.czyKrytyczna ? "KRYTYCZNA" : "Info";
+                                Console.WriteLine($"* {wpis.dataZgloszenia.ToShortDateString()} - {stan} {waga}: {wpis.opis}");
+                            }
+                        }
+                        Console.WriteLine("\nNacisnij dowolny klawisz aby wrocic...");
+                        Console.ReadKey();
+                        break;
+                    case "7":
+                        return;
+                }
+                if (wybory != "1" && wybory != "2" && wybory != "3" && wybory != "4" && wybory != "5") 
+                {
+                    Thread.Sleep(3000);
+                }
             }
         }
     }
