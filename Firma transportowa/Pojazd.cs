@@ -56,6 +56,7 @@ public class Pojazd
         if (AktualnyPrzebieg > PrzebiegOstatniegoPrzegladu + CoIlePrzeglad)
         {
             powod = $"Przekroczony limin kilometrow od serwisu! (Limit: {CoIlePrzeglad} km)";
+            return false;
         }
         bool maKrytyczneUsterki = HistoriaSerwisow.Any(u => u.czyKrytyczna && !u.czyRozwiazana);
         if (maKrytyczneUsterki)

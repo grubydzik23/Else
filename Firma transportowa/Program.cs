@@ -76,6 +76,7 @@ namespace FirmaTransportowa
 
         static void DodajNowyPojazd()
         {
+            Console.Clear();
             Console.Write("Podaj marke auta: ");
             string marka = Console.ReadLine();
             Console.Write("Podaj model auta: ");
@@ -365,7 +366,69 @@ namespace FirmaTransportowa
 
         static void MenuAkcjiKierowcy(Kierowca szofer)
         {
-            
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine($"----ZARZADZANIE: {szofer.Imie} {szofer.Nazwisko} ----");
+                Console.WriteLine("\nAktualne uprawnienia:");
+                foreach (var upr in szofer.KategoriaPrawaJazdy) 
+                {
+                    if (upr.dataWaznosci < DateTime.Now) 
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write("[WYGASŁE] ");
+                    }
+                    else 
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write("[WAŻNE]   ");
+                    }
+                    Console.WriteLine($"Kat. {upr.Kategoria} - do: {upr.dataWaznosci.ToShortDateString()}");
+                    Console.ResetColor();
+                }
+                Console.WriteLine("----------------------------------");
+
+                Console.WriteLine("1. Zaktualizuj date waznosci kategorii");
+                // Console.WriteLine("2. Dodaj nowa kategorie");
+                // Console.WriteLine("3. Przypisz/usun auto");
+                // Console.WriteLine("4. Przypisz/usun trase");
+                // Console.WriteLine("5. Usun kierowce");
+                Console.WriteLine("6. Wroc");
+
+                Console.Write("Wybor: ");
+                string wybory = Console.ReadLine();
+
+                switch (wybory)
+                {
+                    case "1":
+                        Console.Write("Podaj symbol kategorii do edycji (np.B): ");
+                        string szukanaKat =  Console.ReadLine().Trim().ToUpper();
+                        
+                        var uprawnienieDoZmiany = szofer.KategoriaPrawaJazdy.FirstOrDefault(u => u.Kategoria == szukanaKat);
+
+                        if (uprawnienieDoZmiany != null)
+                        {
+                            Console.Write($"Podaj nowa date waznosci dla {szukanaKat} (RRRR-MM-DD): ");
+                            if (DateTime.TryParse(Console.ReadLine(), out DateTime nowaData))
+                            {
+                                uprawnienieDoZmiany.dataWaznosci = nowaData;
+                                Console.WriteLine("Zaktualizowano date.");
+                            }
+                            else Console.WriteLine("Błędna data.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ten kierowca nie posiada takiej kategorii.");
+                        }
+                        break;
+                    case "6":
+                        return;
+                }
+                if (wybory == "1" || wybory == "2")
+                {
+                    Thread.Sleep(1500); 
+                }
+            }
         }
     }
 }
