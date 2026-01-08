@@ -10,13 +10,15 @@ namespace FirmaTransportowa
     class Program
     {
         static List<Pojazd> flota = new List<Pojazd>();
+        public static List<Kierowca> kierowcy = new List<Kierowca>();
         static void Main(string[] args)
         {
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("1.Zarzadzanie pojazdami");
-                Console.WriteLine("2.Wyjdz");
+                Console.WriteLine("1. Zarzadzanie pojazdami");
+                Console.WriteLine("2. Zarzadanie kierowcami");
+                Console.WriteLine("3. Wyjdz");
                 Console.Write("Twoj wybor: ");
                 
                 var choice = Console.ReadLine();
@@ -26,6 +28,9 @@ namespace FirmaTransportowa
                         MenuPojazdow();
                         break;
                     case "2":
+                        MenuKierowcow();
+                        break;
+                    case "3":
                         return;
                     default:
                         Console.WriteLine("Wybrales zla opcje!");
@@ -38,10 +43,10 @@ namespace FirmaTransportowa
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("1.Rejestracja nowego samochodu");
-                Console.WriteLine("2.Lista zarejestrowanych aut");
-                Console.WriteLine("3.Zarzadzaj konkretnym pojazdem");
-                Console.WriteLine("4.Wroc do menu glownego");
+                Console.WriteLine("1. Rejestracja nowego samochodu");
+                Console.WriteLine("2. Lista zarejestrowanych aut");
+                Console.WriteLine("3. Zarzadzaj konkretnym pojazdem");
+                Console.WriteLine("4. Wroc do menu glownego");
                 Console.Write("Twoj wybor: ");
                 var choice = Console.ReadLine();
                 switch (choice)
@@ -266,6 +271,101 @@ namespace FirmaTransportowa
                     Thread.Sleep(3000);
                 }
             }
+        }
+
+        static void MenuKierowcow()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("1. Rejestracja nowego kierowcy");
+                Console.WriteLine("2. Zarzadzaj konkretnym kierowcą");
+                Console.WriteLine("3. Wroc do menu glownego");
+                Console.Write("Twoj wybor: ");
+                var choice = Console.ReadLine();
+                switch (choice)
+                {
+                    case "1":
+                        DodajNowegoKierowce();
+                        break;
+                    case "2":
+                        Kierowca wybrany = WybierzKierowce();
+                        if (wybrany != null)
+                        {
+                            MenuAkcjiKierowcy(wybrany);
+                        }
+                        break;
+                    case "3":
+                        return;
+                    default:
+                        Console.WriteLine("Wybrales zla opcje!");
+                        break;
+                }
+            }
+        }
+
+        static void DodajNowegoKierowce()
+        {
+            Console.Clear();
+            Console.Write("Podaj imie kierowcy: ");
+            string imie = Console.ReadLine();
+           
+            Console.Write("Podaj nazwisko kierowcy: ");
+            string nazwisko = Console.ReadLine();
+            
+            Kierowca nowySzofer = new Kierowca();
+            nowySzofer.Imie = imie;
+            nowySzofer.Nazwisko = nazwisko;
+            
+            Console.WriteLine("Podaj kategorie prawa jazdy oddzielone po przecinku: ");
+            string input =  Console.ReadLine();
+            string[] listaKategorii = input.Split(',');
+            
+            foreach (string kategoria in listaKategorii)
+            {
+                string rodzajKategorii = kategoria.Trim();
+                if (string.IsNullOrEmpty(rodzajKategorii)) continue;
+                Console.Write($"Podaj datę ważności dla kategorii {rodzajKategorii} (RRRR-MM-DD): ");
+                DateTime.TryParse(Console.ReadLine(), out DateTime dataWaznosci);
+                Uprawnienie upr = new Uprawnienie(rodzajKategorii, dataWaznosci);
+                nowySzofer.KategoriaPrawaJazdy.Add(upr);
+            }
+            kierowcy.Add(nowySzofer);
+    
+            Console.WriteLine("Dodano kierowcę z uprawnieniami!");
+            Console.ReadKey();
+            // Console.Write("Podaj date waznosci prawa jazdy: ");
+            // DateTime.TryParse(Console.ReadLine(), out DateTime dataWaznosci);
+        }
+
+        static Kierowca WybierzKierowce()
+        {
+            Console.Clear();
+            Console.WriteLine("<---Wybierz kierowce z listy ponizej.--->");
+
+            if (kierowcy.Count == 0)
+            {
+                Console.WriteLine("Brak kierowcow na liscie.");
+                Console.ReadKey();
+                return null;
+            }
+
+            for (int i=0; i<kierowcy.Count; i++)
+            {
+                string kategorieNapis = string.Join(",", kierowcy[i].KategoriaPrawaJazdy.Select(u => u.Kategoria));
+                Console.WriteLine($"{i+1}. {kierowcy[i].Imie} {kierowcy[i].Nazwisko} Kategorie:({kategorieNapis})");
+            }
+            Console.Write("\nPodaj numer kierowcy (0 jesli chcesz anulowac): ");
+            if(int.TryParse(Console.ReadLine(), out int numer) && numer > 0 && numer <= kierowcy.Count)
+            {
+                return kierowcy[numer - 1];
+            }
+            return null;
+        }
+
+        static void MenuAkcjiKierowcy(Kierowca szofer)
+        {
+            
         }
     }
 }
