@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Firma transportowa")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4d30add8019860b7f67e595ba95de6ec77994656")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3258060cd3ab192722d076a8e45178a9cd08f36f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Firma transportowa")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Firma transportowa")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

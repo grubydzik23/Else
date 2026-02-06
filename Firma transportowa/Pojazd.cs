@@ -2,20 +2,55 @@ namespace FirmaTransportowa;
 
 public class Pojazd
 {
-    public string Marka { get; set; }
-    public string Model { get; set; }
-    public int RokProdukcji { get; set; }
-    public StatusPojazdu Status { get; set; }
-    public string Vin { get; set; }
+    public string Marka { get; private set; }
+    public string Model { get; private set; }
+    public int RokProdukcji { get; private set; }
+    public StatusPojazdu Status { get; private set; }
+    public string Vin { get; private set; }
     
-    public int AktualnyPrzebieg {get; set;}
-    public int PrzebiegOstatniegoPrzegladu { get; set; }
-    public int CoIlePrzeglad { get; set; } = 15000;
+    public int AktualnyPrzebieg { get; private set; }
+    public int PrzebiegOstatniegoPrzegladu { get; private set; }
+    public int CoIlePrzeglad { get; } = 15000;
     
-    public DateTime waznoscPolisyOC  { get; set; }
-    public DateTime WaznoscBadaniaTechnicznego { get; set; } 
+    public DateTime waznoscPolisyOC  { get; private set; }
+    public DateTime WaznoscBadaniaTechnicznego { get; private set; } 
     
-    public List<SerwisPojazdu> HistoriaSerwisow { get; set; } = new List<SerwisPojazdu>();
+    public List<SerwisPojazdu> HistoriaSerwisow { get; } = new List<SerwisPojazdu>();
+
+    public Pojazd(
+        string marka,
+        string model,
+        string vin,
+        int rokProdukcji,
+        int aktualnyPrzebieg,
+        DateTime waznoscBadaniaTechnicznego,
+        DateTime waznoscPolisyOc)
+    {
+        Marka = marka;
+        Model = model;
+        Vin = vin;
+        RokProdukcji = rokProdukcji;
+        AktualnyPrzebieg = aktualnyPrzebieg;
+        PrzebiegOstatniegoPrzegladu = aktualnyPrzebieg;
+        WaznoscBadaniaTechnicznego = waznoscBadaniaTechnicznego;
+        waznoscPolisyOC = waznoscPolisyOc;
+        Status = StatusPojazdu.Dostepny;
+    }
+
+    public void UstawPrzebieg(int nowyPrzebieg)
+    {
+        AktualnyPrzebieg = nowyPrzebieg;
+    }
+
+    public void UstawWaznoscOc(DateTime nowaData)
+    {
+        waznoscPolisyOC = nowaData;
+    }
+
+    public void UstawWaznoscBadaniaTechnicznego(DateTime nowaData)
+    {
+        WaznoscBadaniaTechnicznego = nowaData;
+    }
 
     public void ZglosUsterke(string opis, bool krytyczna)
     {
@@ -32,6 +67,7 @@ public class Pojazd
             usterka.napraw();
         }
 
+        PrzebiegOstatniegoPrzegladu = AktualnyPrzebieg;
         Status = StatusPojazdu.Dostepny;
     }
     public bool czyZdatnyDoJazdy(out string powod)
@@ -55,7 +91,7 @@ public class Pojazd
 
         if (AktualnyPrzebieg > PrzebiegOstatniegoPrzegladu + CoIlePrzeglad)
         {
-            powod = $"Przekroczony limin kilometrow od serwisu! (Limit: {CoIlePrzeglad} km)";
+            powod = $"Przekroczony limit kilometrow od serwisu! (Limit: {CoIlePrzeglad} km)";
             return false;
         }
         bool maKrytyczneUsterki = HistoriaSerwisow.Any(u => u.czyKrytyczna && !u.czyRozwiazana);

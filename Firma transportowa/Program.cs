@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
@@ -93,17 +93,15 @@ namespace FirmaTransportowa
             Console.Write("Podaj date waznosci ubezpieczenia (RRRR-MM-DD):  ");
             DateTime.TryParse(Console.ReadLine(), out DateTime oc);
 
-            Pojazd noweAuto = new Pojazd();
-            noweAuto.Marka = marka;
-            noweAuto.Model = model;
-            noweAuto.RokProdukcji = rok;
-            noweAuto.Vin = vin;
-            noweAuto.AktualnyPrzebieg = przebieg;
-            noweAuto.WaznoscBadaniaTechnicznego = przeglad;
-            noweAuto.waznoscPolisyOC = oc;
-
-            noweAuto.Status = StatusPojazdu.Dostepny;
-            
+            Pojazd noweAuto = new Pojazd(
+                marka,
+                model,
+                vin,
+                rok,
+                przebieg,
+                przeglad,
+                oc);
+ 
             flota.Add(noweAuto);
             Console.WriteLine("Pojazd dodany pomyślnie! Naciśnij dowolny klawisz...");
             Console.ReadKey();
@@ -194,7 +192,7 @@ namespace FirmaTransportowa
                         {
                             if (nowyPrzebieg >= auto.AktualnyPrzebieg)
                             {
-                                auto.AktualnyPrzebieg = nowyPrzebieg;
+                                auto.UstawPrzebieg(nowyPrzebieg);
                                 Console.Write("Zapisano.");
                             }
                             else
@@ -209,7 +207,7 @@ namespace FirmaTransportowa
                         {
                             if (noweOC >= auto.waznoscPolisyOC)
                             {
-                                auto.waznoscPolisyOC = noweOC;
+                                auto.UstawWaznoscOc(noweOC);
                                 Console.Write("Zapisano.");
                             }
                             else
@@ -224,7 +222,7 @@ namespace FirmaTransportowa
                         {
                             if (noweBadania >= auto.WaznoscBadaniaTechnicznego)
                             {
-                                auto.WaznoscBadaniaTechnicznego = noweBadania;
+                                auto.UstawWaznoscBadaniaTechnicznego(noweBadania);
                                 Console.Write("Zapisano.");
                             }
                             else
@@ -314,9 +312,7 @@ namespace FirmaTransportowa
             Console.Write("Podaj nazwisko kierowcy: ");
             string nazwisko = Console.ReadLine();
             
-            Kierowca nowySzofer = new Kierowca();
-            nowySzofer.Imie = imie;
-            nowySzofer.Nazwisko = nazwisko;
+            Kierowca nowySzofer = new Kierowca(imie, nazwisko);
             
             Console.WriteLine("Podaj kategorie prawa jazdy oddzielone po przecinku: ");
             string input =  Console.ReadLine();
@@ -328,8 +324,7 @@ namespace FirmaTransportowa
                 if (string.IsNullOrEmpty(rodzajKategorii)) continue;
                 Console.Write($"Podaj datę ważności dla kategorii {rodzajKategorii} (RRRR-MM-DD): ");
                 DateTime.TryParse(Console.ReadLine(), out DateTime dataWaznosci);
-                Uprawnienie upr = new Uprawnienie(rodzajKategorii, dataWaznosci);
-                nowySzofer.KategoriaPrawaJazdy.Add(upr);
+                nowySzofer.DodajUprawnienie(rodzajKategorii, dataWaznosci);
             }
             kierowcy.Add(nowySzofer);
     
@@ -389,7 +384,7 @@ namespace FirmaTransportowa
                 Console.WriteLine("----------------------------------");
 
                 Console.WriteLine("1. Zaktualizuj date waznosci kategorii");
-                // Console.WriteLine("2. Dodaj nowa kategorie");
+                Console.WriteLine("2. Dodaj nowa kategorie");
                 // Console.WriteLine("3. Przypisz/usun auto");
                 // Console.WriteLine("4. Przypisz/usun trase");
                 // Console.WriteLine("5. Usun kierowce");
@@ -411,7 +406,7 @@ namespace FirmaTransportowa
                             Console.Write($"Podaj nowa date waznosci dla {szukanaKat} (RRRR-MM-DD): ");
                             if (DateTime.TryParse(Console.ReadLine(), out DateTime nowaData))
                             {
-                                uprawnienieDoZmiany.dataWaznosci = nowaData;
+                                uprawnienieDoZmiany.ZmienDateWaznosci(nowaData);
                                 Console.WriteLine("Zaktualizowano date.");
                             }
                             else Console.WriteLine("Błędna data.");
@@ -420,6 +415,10 @@ namespace FirmaTransportowa
                         {
                             Console.WriteLine("Ten kierowca nie posiada takiej kategorii.");
                         }
+                        break;
+                    case "2":
+                        Console.WriteLine("Jaka chcialbys dodac kategorie: ");
+                        
                         break;
                     case "6":
                         return;

@@ -2,10 +2,10 @@ namespace FirmaTransportowa;
 
 public class SerwisPojazdu
 {
-    public string opis { get; set; }
-    public DateTime dataZgloszenia { get; set; }
-    public bool czyKrytyczna { get; set; }
-    public bool czyRozwiazana { get; set; }
+    public string opis { get; private set; }
+    public DateTime dataZgloszenia { get; private set; }
+    public bool czyKrytyczna { get; private set; }
+    public bool czyRozwiazana { get; private set; }
 
     public SerwisPojazdu(string Opis, bool CzyKrytyczna)
     {
