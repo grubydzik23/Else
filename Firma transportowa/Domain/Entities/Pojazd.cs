@@ -17,12 +17,15 @@ public class Pojazd
     
     public List<SerwisPojazdu> HistoriaSerwisow { get; } = new List<SerwisPojazdu>();
 
+    public Kierowca? PrzypisanyKierowca { get; private set; }
+
     public Pojazd(
         string marka,
         string model,
         string vin,
         int rokProdukcji,
         int aktualnyPrzebieg,
+        int przebiegOstatniegoPrzegladu,
         DateTime waznoscBadaniaTechnicznego,
         DateTime waznoscPolisyOc)
     {
@@ -31,7 +34,11 @@ public class Pojazd
         Vin = vin;
         RokProdukcji = rokProdukcji;
         AktualnyPrzebieg = aktualnyPrzebieg;
-        PrzebiegOstatniegoPrzegladu = aktualnyPrzebieg;
+        if (przebiegOstatniegoPrzegladu > aktualnyPrzebieg)
+        {
+            throw new ArgumentException("Przebieg ostatniego przeglądu nie może być większy niż aktualny przebieg.");
+        }
+        PrzebiegOstatniegoPrzegladu = przebiegOstatniegoPrzegladu;
         WaznoscBadaniaTechnicznego = waznoscBadaniaTechnicznego;
         waznoscPolisyOC = waznoscPolisyOc;
         Status = StatusPojazdu.Dostepny;
@@ -50,6 +57,16 @@ public class Pojazd
     public void UstawWaznoscBadaniaTechnicznego(DateTime nowaData)
     {
         WaznoscBadaniaTechnicznego = nowaData;
+    }
+
+    public void PrzypiszKierowce(Kierowca kierowca)
+    {
+        PrzypisanyKierowca = kierowca;
+    }
+
+    public void UsunPrzypisanieKierowcy()
+    {
+        PrzypisanyKierowca = null;
     }
 
     public void ZglosUsterke(string opis, bool krytyczna)

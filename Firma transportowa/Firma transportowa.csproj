@@ -10,8 +10,6 @@
 
     <ItemGroup>
       <Folder Include="Domain\" />
-      <Folder Include="Domain\Entities\" />
-      <Folder Include="Domain\ValueObjects\" />
       <Folder Include="Domain\Enums\" />
       <Folder Include="Domain\Services\" />
       <Folder Include="Domain\Events\" />
