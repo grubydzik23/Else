@@ -6,6 +6,8 @@ public sealed record CreatePojazdRequest(
     string Vin,
     int RokProdukcji,
     int AktualnyPrzebieg,
+    int PrzebiegOstatniegoPrzegladu,
+    string WymaganaKategoriaPrawaJazdy,
     DateTime WaznoscBadaniaTechnicznego,
     DateTime WaznoscPolisyOC
 );

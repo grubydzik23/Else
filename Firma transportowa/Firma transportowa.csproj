@@ -11,9 +11,6 @@
     <ItemGroup>
       <Folder Include="Domain\" />
       <Folder Include="Domain\Enums\" />
-      <Folder Include="Domain\Services\" />
-      <Folder Include="Domain\Events\" />
-      <Folder Include="Domain\Exceptions\" />
 
       <Folder Include="Application\" />
       <Folder Include="Application\DTOs\" />
@@ -23,9 +20,7 @@
       <Folder Include="Application\Interfaces\" />
 
       <Folder Include="Infrastructure\" />
-      <Folder Include="Infrastructure\Persistence\" />
       <Folder Include="Infrastructure\Repositories\" />
-      <Folder Include="Infrastructure\Services\" />
 
       <Folder Include="Presentation\" />
       <Folder Include="Presentation\ConsoleUI\" />

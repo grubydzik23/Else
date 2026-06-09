@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
-using FirmaTransportowa;
 using FirmaTransportowa.Application.DTOs;
+using FirmaTransportowa.Domain.Entities;
+using FirmaTransportowa.Domain.Enums;
+using FirmaTransportowa.Domain.ValueObjects;
 
 namespace FirmaTransportowa.Application.Mappings;
 
@@ -16,16 +18,30 @@ public static class DtoMappingExtensions
             _ => throw new ArgumentOutOfRangeException(nameof(status), status, "Nieznany status pojazdu.")
         };
 
+    public static TypWpisuSerwisowegoDto ToDto(this TypWpisuSerwisowego typ)
+        => typ switch
+        {
+            TypWpisuSerwisowego.Usterka => TypWpisuSerwisowegoDto.Usterka,
+            TypWpisuSerwisowego.Naprawa => TypWpisuSerwisowegoDto.Naprawa,
+            TypWpisuSerwisowego.Przeglad => TypWpisuSerwisowegoDto.Przeglad,
+            TypWpisuSerwisowego.WymianaCzesci => TypWpisuSerwisowegoDto.WymianaCzesci,
+            _ => throw new ArgumentOutOfRangeException(nameof(typ), typ, "Nieznany typ wpisu serwisowego.")
+        };
+
     public static UprawnienieDto ToDto(this Uprawnienie u)
         => new(u.Kategoria, u.dataWaznosci);
 
     public static SerwisPojazduDto ToDto(this SerwisPojazdu s)
-        => new(s.opis, s.dataZgloszenia, s.czyKrytyczna, s.czyRozwiazana);
+        => new(s.opis, s.dataZgloszenia, s.TypWpisu.ToDto(), s.czyKrytyczna, s.czyRozwiazana);
 
-    public static KierowcaDto ToDto(this Kierowca k)
+    public static TrasaDto ToDto(this Trasa t)
+        => new(t.VinPojazdu, t.Kierowca, t.Opis, t.Towar, t.Start, t.Koniec, t.PrzejechaneKm);
+
+    public static KierowcaDto ToDto(this Kierowca k, string? przypisanyPojazdVin = null)
         => new(
             k.Imie,
             k.Nazwisko,
+            przypisanyPojazdVin,
             k.KategoriaPrawaJazdy.Select(ToDto).ToList()
         );
 
@@ -36,6 +52,8 @@ public static class DtoMappingExtensions
             p.RokProdukcji,
             p.Status.ToDto(),
             p.Vin,
+            p.WymaganaKategoriaPrawaJazdy,
+            p.PrzypisanyKierowca == null ? null : $"{p.PrzypisanyKierowca.Imie} {p.PrzypisanyKierowca.Nazwisko}",
             p.AktualnyPrzebieg,
             p.PrzebiegOstatniegoPrzegladu,
             p.CoIlePrzeglad,
@@ -44,4 +62,3 @@ public static class DtoMappingExtensions
             p.HistoriaSerwisow.Select(ToDto).ToList()
         );
 }
-

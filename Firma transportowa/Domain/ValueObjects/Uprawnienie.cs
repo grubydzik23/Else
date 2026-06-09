@@ -1,4 +1,4 @@
-namespace FirmaTransportowa;
+namespace FirmaTransportowa.Domain.ValueObjects;
 
 public class Uprawnienie
 {

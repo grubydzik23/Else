@@ -1,4 +1,4 @@
-namespace FirmaTransportowa;
+namespace FirmaTransportowa.Domain.Enums;
 
 public enum StatusPojazdu
 {

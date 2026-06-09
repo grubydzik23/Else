@@ -1,4 +1,6 @@
-namespace FirmaTransportowa;
+using FirmaTransportowa.Domain.ValueObjects;
+
+namespace FirmaTransportowa.Domain.Entities;
 
 public class Kierowca
 {
@@ -19,7 +21,6 @@ public class Kierowca
         KategoriaPrawaJazdy.Add(upr);
     }
 
-    // public string trasa { get; set; }
     public bool czyMaWaznaKategorie(string wymaganaKategoria)
     {
         return KategoriaPrawaJazdy.Any(u =>

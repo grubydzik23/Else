@@ -6,6 +6,8 @@ public sealed record PojazdDto(
     int RokProdukcji,
     StatusPojazduDto Status,
     string Vin,
+    string WymaganaKategoriaPrawaJazdy,
+    string? PrzypisanyKierowca,
     int AktualnyPrzebieg,
     int PrzebiegOstatniegoPrzegladu,
     int CoIlePrzeglad,
