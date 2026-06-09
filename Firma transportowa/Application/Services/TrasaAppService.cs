@@ -72,9 +72,9 @@ public sealed class TrasaAppService
         return OperationResult.Ok();
     }
 
-    public void EndRoute(Trasa trasa, int km)
+    public void EndRoute(Trasa trasa, int km, decimal zatankowaneLitry, decimal cenaZaLitr, decimal kosztyDodatkowe)
     {
-        trasa.Zakoncz(km);
+        trasa.Zakoncz(km, zatankowaneLitry, cenaZaLitr, kosztyDodatkowe);
         var pojazd = _pojazdRepository.GetByVin(trasa.VinPojazdu);
         if (pojazd != null && km > 0)
             pojazd.UstawPrzebieg(pojazd.AktualnyPrzebieg + km);

@@ -7,7 +7,6 @@
 /Users/a.hada1ski/Desktop/STUDIA/ELSE/STAŻ/Firma transportowa-else/Firma transportowa/obj/Debug/net10.0/Firma transportowa.AssemblyInfoInputs.cache
 /Users/a.hada1ski/Desktop/STUDIA/ELSE/STAŻ/Firma transportowa-else/Firma transportowa/obj/Debug/net10.0/Firma transportowa.AssemblyInfo.cs
 /Users/a.hada1ski/Desktop/STUDIA/ELSE/STAŻ/Firma transportowa-else/Firma transportowa/obj/Debug/net10.0/Firma transportowa.csproj.CoreCompileInputs.cache
-/Users/a.hada1ski/Desktop/STUDIA/ELSE/STAŻ/Firma transportowa-else/Firma transportowa/obj/Debug/net10.0/Firma transportowa.sourcelink.json
 /Users/a.hada1ski/Desktop/STUDIA/ELSE/STAŻ/Firma transportowa-else/Firma transportowa/obj/Debug/net10.0/Firma transportowa.dll
 /Users/a.hada1ski/Desktop/STUDIA/ELSE/STAŻ/Firma transportowa-else/Firma transportowa/obj/Debug/net10.0/refint/Firma transportowa.dll
 /Users/a.hada1ski/Desktop/STUDIA/ELSE/STAŻ/Firma transportowa-else/Firma transportowa/obj/Debug/net10.0/Firma transportowa.pdb

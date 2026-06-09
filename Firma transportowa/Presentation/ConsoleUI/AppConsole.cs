@@ -591,9 +591,15 @@ public sealed class AppConsole
         var trasa = aktywne[numer - 1];
         Console.Write("Ile km przejechano na tej trasie?: ");
         int.TryParse(Console.ReadLine(), out int km);
-        _trasaAppService.EndRoute(trasa, km);
+        Console.Write("Ile litrow paliwa bylo zatankowane na koncu trasy?: ");
+        decimal.TryParse(Console.ReadLine(), out decimal litry);
+        Console.Write("Jaka byla srednia cena paliwa za litr?: ");
+        decimal.TryParse(Console.ReadLine(), out decimal cena);
+        Console.Write("Jakie byly koszty dodatkowe(parking,autostrada itp.)?: ");
+        decimal.TryParse(Console.ReadLine(), out decimal dodatkowe);
+        _trasaAppService.EndRoute(trasa, km, litry, cena, dodatkowe);
 
-        Console.WriteLine("Zakończono trasę. Naciśnij dowolny klawisz...");
+        Console.WriteLine("Zakończono trasę i podliczono koszty. Naciśnij dowolny klawisz...");
         Console.ReadKey();
     }
 
@@ -617,7 +623,7 @@ public sealed class AppConsole
         {
             var koniec = t.Koniec == null ? "AKTYWNA" : t.Koniec.Value.ToString();
             var km = t.PrzejechaneKm == null ? "-" : t.PrzejechaneKm.Value.ToString();
-            Console.WriteLine($"* {t.Start} -> {koniec} | km: {km} | VIN: {t.VinPojazdu} | {t.Opis} | Towar: {t.Towar}");
+            Console.WriteLine($"* {t.Start} -> {koniec} | km: {km} | VIN: {t.VinPojazdu} | {t.Opis} | Towar: {t.Towar} | Koszty: {t.KosztyCalkowite}zł");
         }
 
         Console.WriteLine("\nNaciśnij dowolny klawisz...");

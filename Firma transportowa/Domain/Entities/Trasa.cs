@@ -12,6 +12,7 @@ public class Trasa
     public DateTime? Koniec { get; private set; }
     
     public int? PrzejechaneKm { get; private set; }
+    public decimal? SrednieSpalanie { get; private set; }
     public decimal? ZatankowaneLitry { get; private set; }
     public decimal? CenaZaLitr { get; private set; }
     public decimal? KosztyDodatkowe { get; private set; }
@@ -30,13 +31,23 @@ public class Trasa
         Start = DateTime.Now;
     }
 
-    public void Zakoncz(int przejechaneKm, decimal ZatankowaneLitry, decimal CenaZaLitr, decimal KosztyDodatkowe)
+    public void Zakoncz(int przejechaneKm, decimal zatankowaneLitry, decimal cenaZaLitr, decimal kosztyDodatkowe)
     {
         PrzejechaneKm = przejechaneKm;
         Koniec = DateTime.Now;
-        // ZatankowaneLitry = ;
-        // CenaZaLitr = ;
-        // KosztyDodatkowe = ;
-        KosztyCalkowite = CenaZaLitr*ZatankowaneLitry + KosztyDodatkowe ;
+        
+        ZatankowaneLitry = zatankowaneLitry;
+        CenaZaLitr = cenaZaLitr;
+        KosztyDodatkowe = kosztyDodatkowe;
+        
+        KosztyCalkowite = (cenaZaLitr*zatankowaneLitry) + kosztyDodatkowe ;
+        if (przejechaneKm > 0)
+        {
+            SrednieSpalanie = (zatankowaneLitry / przejechaneKm) * 100m;
+        }
+        else
+        {
+            SrednieSpalanie = 0m;
+        }
     }
 }
