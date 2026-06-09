@@ -5,9 +5,6 @@ using FirmaTransportowa.Presentation.ConsoleUI;
 
 namespace FirmaTransportowa;
 
-/// <summary>
-/// Punkt wejścia: kompozycja zależności (DI ręczne) i uruchomienie warstwy prezentacji.
-/// </summary>
 internal class Program
 {
     public static void Main(string[] args)

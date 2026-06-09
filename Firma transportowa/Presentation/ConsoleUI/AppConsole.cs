@@ -9,9 +9,6 @@ using FirmaTransportowa.Domain.Enums;
 
 namespace FirmaTransportowa.Presentation.ConsoleUI;
 
-/// <summary>
-/// Warstwa prezentacji: menu konsolowe i wejście/wyjście. Logika biznesowa jest w Application + Domain.
-/// </summary>
 public sealed class AppConsole
 {
     private readonly PojazdAppService _pojazdAppService;

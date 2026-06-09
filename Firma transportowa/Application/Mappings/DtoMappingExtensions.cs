@@ -35,7 +35,7 @@ public static class DtoMappingExtensions
         => new(s.opis, s.dataZgloszenia, s.TypWpisu.ToDto(), s.czyKrytyczna, s.czyRozwiazana);
 
     public static TrasaDto ToDto(this Trasa t)
-        => new(t.VinPojazdu, t.Kierowca, t.Opis, t.Towar, t.Start, t.Koniec, t.PrzejechaneKm);
+        => new(t.VinPojazdu, t.Kierowca, t.Opis, t.Towar, t.Start, t.Koniec, t.PrzejechaneKm, t.SrednieSpalanie, t.ZatankowaneLitry, t.CenaZaLitr, t.KosztyDodatkowe, t.KosztyCalkowite);
 
     public static KierowcaDto ToDto(this Kierowca k, string? przypisanyPojazdVin = null)
         => new(

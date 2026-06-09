@@ -7,5 +7,10 @@ public sealed record TrasaDto(
     string Towar,
     DateTime Start,
     DateTime? Koniec,
-    int? PrzejechaneKm
+    int? PrzejechaneKm,
+    decimal? SrednieSpalanie,
+    decimal? ZatankowaneLitry,
+    decimal? CenaZaLitr,
+    decimal? KosztyDodatkowe,
+    decimal? KosztyCalkowite
 );
